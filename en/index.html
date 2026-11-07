@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ignacio Moya Montoro</title>
+    <meta
+      name="description"
+      content="Ignacio Moya Montoro — frontend developer enthusiastic about mobile development. React Native, Expo, Next.js and TypeScript."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href="https://anaselmo.dev/en/" />
+    <link rel="alternate" hreflang="en" href="https://anaselmo.dev/en/" />
+    <link rel="alternate" hreflang="es" href="https://anaselmo.dev/es/" />
+    <link rel="alternate" hreflang="x-default" href="https://anaselmo.dev/" />
+    <link rel="preload" href="../fonts/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../fonts/dm-mono-500.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      /* Inlined (and fonts self-hosted) so nothing blocks the first render.
+         Keep this block identical in es/ and en/. */
+      @font-face {
+        font-family: "DM Mono";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("../fonts/dm-mono-400.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "DM Mono";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("../fonts/dm-mono-500.woff2") format("woff2");
+      }
+
+      :root {
+        --bg: #fbfbfa;
+        --fg: #111111;
+        --muted: #6e6e6e;
+        --accent: #2f9e6b;
+        --mono: "DM Mono", ui-monospace, monospace;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f0f0f;
+          --fg: #ededec;
+          --muted: #8f8f8f;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      /* One screen: sections spread to fill the viewport height and only scroll
+         when the content can't fit even at the minimum gap. */
+      body {
+        margin: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--mono);
+        font-size: 14px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        padding: clamp(32px, 8vh, 128px) 24px clamp(32px, 5vh, 64px);
+      }
+
+      main {
+        flex: 1;
+        max-width: 620px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      /* Phones scroll anyway, so keep the sections clearly apart. */
+      @media (max-width: 640px) {
+        main {
+          gap: 48px;
+        }
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: inherit;
+        line-height: inherit;
+        font-weight: 500;
+      }
+
+      h2 {
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--accent);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+
+      a:hover {
+        opacity: 0.6;
+      }
+
+      a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 4px;
+        border-radius: 2px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .entries,
+      .links {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .entries {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* Name, dotted leader and dates on one line. */
+      .entry {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .entry > :first-child {
+        flex: 0 1 auto;
+        min-width: 0;
+      }
+
+      .entry > :last-child {
+        flex: none;
+      }
+
+      .leader {
+        flex: 1 1 24px;
+        position: relative;
+        top: -4px;
+        border-bottom: 1px dotted var(--muted);
+      }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 28px;
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        color: var(--muted);
+      }
+
+      /* On phones the leader has no room: put the dates on their own line instead. */
+      @media (max-width: 640px) {
+        .entry {
+          flex-wrap: wrap;
+          row-gap: 0;
+        }
+
+        .entry > :first-child {
+          flex-basis: 100%;
+        }
+
+        .leader {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>Ignacio Moya Montoro</h1>
+          <p class="muted">React Native, Expo &amp; Next.js</p>
+        </div>
+        <p>
+          I’m a frontend developer enthusiastic about mobile development. I work mostly with React
+          Native, Expo, Next.js and TypeScript, and I’m currently building Nuit.
+        </p>
+      </header>
+
+      <section aria-labelledby="building">
+        <h2 id="building">Building</h2>
+        <ul class="entries">
+          <li>
+            <p class="entry">
+              <a href="https://nuit-app.com" target="_blank" rel="noopener">Nuit</a>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="muted">now</span>
+            </p>
+            <p class="muted">In the works — more soon.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="experience">
+        <h2 id="experience">Experience</h2>
+        <ul class="entries">
+          <li>
+            <p class="entry">
+              <span>DLTCode</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="muted">mar 2025 – now</span>
+            </p>
+            <p class="muted">Frontend Developer &amp; Project Lead</p>
+          </li>
+          <li>
+            <p class="entry">
+              <span>Celtiberian Solutions</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="muted">jan 2024 – feb 2025</span>
+            </p>
+            <p class="muted">Full-stack Developer</p>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="education">
+        <h2 id="education">Education</h2>
+        <ul class="entries">
+          <li>
+            <p class="entry">
+              <span>University of Granada</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="muted">sep 2020 – jul 2024</span>
+            </p>
+            <p class="muted">BSc in Computer Engineering</p>
+          </li>
+          <li>
+            <p class="entry">
+              <span>University of Hradec Králové</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="muted">sep 2022 – jun 2023</span>
+            </p>
+            <p class="muted">Erasmus, Faculty of Informatics</p>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="contact">
+        <h2 id="contact">Contact</h2>
+        <ul class="links">
+          <li><a href="mailto:nacho@nuit-app.com">Email</a></li>
+          <li><a href="https://github.com/anaselmo" target="_blank" rel="noopener">GitHub</a></li>
+          <li>
+            <a href="https://www.linkedin.com/in/ignacio-moya-montoro/" target="_blank" rel="noopener">LinkedIn</a>
+          </li>
+        </ul>
+      </section>
+
+      <footer>
+        <span>© 2026 anaselmo.dev</span>
+        <a href="../es/" hreflang="es" lang="es" data-lang="es">Español</a>
+      </footer>
+    </main>
+    <script>
+      // Remember an explicit language choice for the redirect at /.
+      for (const link of document.querySelectorAll("a[data-lang]")) {
+        link.addEventListener("click", () => {
+          try {
+            localStorage.setItem("lang", link.dataset.lang);
+          } catch {}
+        });
+      }
+    </script>
+  </body>
+</html>
