@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verinet return link</title>
+    <!-- A device test page, not part of the portfolio: nothing links here. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="../favicon.ico" sizes="32x32" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <style>
+      /* Same tokens as es/ and en/. */
+      @font-face {
+        font-family: "DM Mono";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("../fonts/dm-mono-400.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "DM Mono";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("../fonts/dm-mono-500.woff2") format("woff2");
+      }
+
+      :root {
+        --bg: #fbfbfa;
+        --fg: #111111;
+        --muted: #6e6e6e;
+        --accent: #2f9e6b;
+        --mono: "DM Mono", ui-monospace, monospace;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f0f0f;
+          --fg: #ededec;
+          --muted: #8f8f8f;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--mono);
+        font-size: 14px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        padding: clamp(32px, 8vh, 96px) 24px 48px;
+      }
+
+      main {
+        max-width: 620px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      h1,
+      h2,
+      p,
+      ol {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: inherit;
+        line-height: inherit;
+        font-weight: 500;
+      }
+
+      h2 {
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--accent);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+
+      a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 4px;
+        border-radius: 2px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      header,
+      section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      /* Room for the numbers, so they line up with the headings. */
+      ol {
+        padding-left: 3ch;
+      }
+
+      code {
+        font-family: inherit;
+        overflow-wrap: anywhere;
+      }
+
+      /* Thumb-sized: this page is only ever used on a phone. */
+      .button {
+        display: block;
+        padding: 16px 20px;
+        border: 1px solid var(--accent);
+        border-radius: 6px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 500;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .button:active {
+        background: var(--accent);
+        color: var(--bg);
+      }
+
+      .status {
+        padding: 12px 16px;
+        border-left: 2px solid var(--muted);
+      }
+
+      .status[data-tone="ok"] {
+        border-color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Verinet return link</h1>
+        <p class="muted">
+          Checks that <code>es.verinet.verinet://oauth/callback</code> brings Verinet back on the
+          screen it was showing, as the external-login success page will.
+        </p>
+      </header>
+
+      <section aria-labelledby="setup">
+        <h2 id="setup">Before</h2>
+        <ol>
+          <li>Install a Verinet build that has the return link (commit a31ce6bb or later).</li>
+          <li>Open it and move off the start screen, so a cold start would show.</li>
+          <li>Open this page in the phone's default browser (Safari, Chrome), not inside another app.</li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="tap">
+        <h2 id="tap">1 · Tap</h2>
+        <p class="muted">What the success page's button does.</p>
+        <a class="button" id="tap-link" href="es.verinet.verinet://oauth/callback">Volver a Verinet</a>
+      </section>
+
+      <section aria-labelledby="auto">
+        <h2 id="auto">2 · Automatic</h2>
+        <p class="muted">
+          What a success page that redirects on load does, with no tap on the page itself. Browsers
+          may block this or ask first.
+        </p>
+        <a class="button" href="?auto">Reload and redirect</a>
+      </section>
+
+      <section aria-labelledby="result">
+        <h2 id="result">Result</h2>
+        <p class="status" id="status" aria-live="polite">Nothing tried yet.</p>
+        <p class="muted">
+          Passes if Verinet comes to the front on the screen you left it on. Its start screen means
+          the OS had closed it, or the link started a second copy.
+        </p>
+      </section>
+    </main>
+    <script>
+      const returnLink = "es.verinet.verinet://oauth/callback";
+      const status = document.getElementById("status");
+      let tryId = 0;
+      let leftPage = false;
+
+      function show(text, tone) {
+        status.textContent = text;
+        status.dataset.tone = tone || "";
+      }
+
+      function tried(how) {
+        const id = ++tryId;
+        leftPage = false;
+        show(`${how}: opening Verinet…`);
+        // iOS asks "Open in Verinet?" first; give it time before calling it a miss.
+        setTimeout(() => {
+          if (id === tryId && !leftPage && !document.hidden) {
+            show(
+              `${how}: still on this page after 4 s. If no prompt showed up, the installed ` +
+                "Verinet doesn't have the link yet, or the browser blocked it.",
+            );
+          }
+        }, 4000);
+      }
+
+      // The browser goes to the background when another app takes over, and comes
+      // back when the user returns to it.
+      document.addEventListener("visibilitychange", () => {
+        if (!tryId) return;
+        if (document.hidden) {
+          leftPage = true;
+        } else if (leftPage) {
+          show("Another app opened and you came back. If it was Verinet on its old screen, it works.", "ok");
+        }
+      });
+
+      document.getElementById("tap-link").addEventListener("click", () => tried("Tap"));
+
+      if (new URLSearchParams(location.search).has("auto")) {
+        // Drop ?auto so going back to this page doesn't fire the redirect again.
+        history.replaceState(null, "", location.pathname);
+        tried("Automatic");
+        setTimeout(() => {
+          location.href = returnLink;
+        }, 500);
+      }
+    </script>
+  </body>
+</html>
